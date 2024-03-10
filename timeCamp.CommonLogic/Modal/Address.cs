@@ -14,6 +14,5 @@ namespace timeCamp.CommonLogic.Modal
 
         public string? Phone { get; set; } = null!;
 
-        public Guid EmployeeId { get; set; }
     }
 }

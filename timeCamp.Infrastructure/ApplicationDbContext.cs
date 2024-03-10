@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using timeCamp.CommonLogic.Modal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Npgsql;
 
 namespace timeCamp.Infrastructure
 {
@@ -20,6 +19,8 @@ namespace timeCamp.Infrastructure
         public DbSet<Job> Job { get; set; }
 
         public DbSet<Ticket> Ticket { get; set; }
+
+        public DbSet<EmployeeCredentials> EmployeeCredentials { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
         {
@@ -39,10 +40,12 @@ namespace timeCamp.Infrastructure
             builder.Entity<Employee>().HasKey(a => a.Id);
             builder.Entity<Job>().HasKey(a => a.Id);
             builder.Entity<Ticket>().HasKey(a => a.Id);
+            builder.Entity<EmployeeCredentials>().HasKey(a => a.Id);    
 
             builder.Entity<Employee>().HasOne(a => a.Address);
-            builder.Entity<Employee>().HasMany(a => a.Job);
+            builder.Entity<Employee>().HasOne(a => a.Job);
             builder.Entity<Employee>().HasMany(a => a.Tickets);
+            builder.Entity<Employee>().HasOne(a => a.EmployeeCredentials);
 
             base.OnModelCreating(builder);
         }

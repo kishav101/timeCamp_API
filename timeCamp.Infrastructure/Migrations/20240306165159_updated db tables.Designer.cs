@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using timeCamp.Infrastructure;
@@ -11,9 +12,11 @@ using timeCamp.Infrastructure;
 namespace timeCamp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240306165159_updated db tables")]
+    partial class updateddbtables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,6 +235,9 @@ namespace timeCamp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Phone")
                         .HasColumnType("text");
 
@@ -245,6 +251,9 @@ namespace timeCamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
+
                     b.ToTable("Addresses");
                 });
 
@@ -254,18 +263,9 @@ namespace timeCamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AddressId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("EmployeeCredentialsId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Firstname")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<Guid>("JobId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("Lastname")
                         .IsRequired()
@@ -276,32 +276,7 @@ namespace timeCamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
-
-                    b.HasIndex("EmployeeCredentialsId");
-
-                    b.HasIndex("JobId");
-
                     b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("timeCamp.CommonLogic.Modal.EmployeeCredentials", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmployeeCredentials");
                 });
 
             modelBuilder.Entity("timeCamp.CommonLogic.Modal.Job", b =>
@@ -314,11 +289,16 @@ namespace timeCamp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Job");
                 });
@@ -416,31 +396,22 @@ namespace timeCamp.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("timeCamp.CommonLogic.Modal.Employee", b =>
+            modelBuilder.Entity("timeCamp.CommonLogic.Modal.Address", b =>
                 {
-                    b.HasOne("timeCamp.CommonLogic.Modal.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
+                    b.HasOne("timeCamp.CommonLogic.Modal.Employee", null)
+                        .WithOne("Address")
+                        .HasForeignKey("timeCamp.CommonLogic.Modal.Address", "EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("timeCamp.CommonLogic.Modal.EmployeeCredentials", "EmployeeCredentials")
-                        .WithMany()
-                        .HasForeignKey("EmployeeCredentialsId")
+            modelBuilder.Entity("timeCamp.CommonLogic.Modal.Job", b =>
+                {
+                    b.HasOne("timeCamp.CommonLogic.Modal.Employee", null)
+                        .WithMany("Job")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("timeCamp.CommonLogic.Modal.Job", "Job")
-                        .WithMany()
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Address");
-
-                    b.Navigation("EmployeeCredentials");
-
-                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("timeCamp.CommonLogic.Modal.Ticket", b =>
@@ -452,6 +423,11 @@ namespace timeCamp.Infrastructure.Migrations
 
             modelBuilder.Entity("timeCamp.CommonLogic.Modal.Employee", b =>
                 {
+                    b.Navigation("Address")
+                        .IsRequired();
+
+                    b.Navigation("Job");
+
                     b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
