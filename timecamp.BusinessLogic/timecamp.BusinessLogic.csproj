@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\timeCamp_API.API\timeCamp_API.API.csproj" />
+    <ProjectReference Include="..\timeCamp.CommonLogic\timeCamp.CommonLogic.csproj" />
+    <ProjectReference Include="..\timeCamp.Infrastructure\timeCamp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,10 +6,10 @@ namespace timeCamp.CommonLogic.Dtos
 {
     public sealed class LoginDto
     {
-        [JsonPropertyName("email")]
-        public required string Email { get; set; }
+        [JsonPropertyName("Username")]
+        public required string Username { get; set; }
 
-        [JsonPropertyName ("password")]
+        [JsonPropertyName ("Password")]
         public required string Password { get; set; }
     }
 }
