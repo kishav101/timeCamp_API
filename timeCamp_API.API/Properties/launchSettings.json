@@ -31,7 +31,9 @@
         "Tenant_Id": "d3528fc5-f5b3-47a9-a47b-2b006c90e51d",
         "Client_Secret": "G2n8Q~3YZDhWaUzjExFPQ9NK7cgPIfdFQViEgds~",
         "Scope": "https://graph.microsoft.com/.default",
-        "Grant_Type": "client_credentials"
+        "Grant_Type": "client_credentials",
+        "Identity_Instance": "https://login.microsoftonline.com/",
+        "AD_Domain": "kishav100yahoo.onmicrosoft.com"
       }
     },
     "IIS Express": {

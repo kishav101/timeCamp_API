@@ -1,14 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
-using Microsoft.Identity.Web;
+﻿using Microsoft.AspNetCore.Mvc;
 using timeCamp.CommonLogic.Dtos;
 using timeCamp.CommonLogic.Interfaces;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNet.Identity;
-using System.Text;
 
 namespace timeCamp_API.API.Controllers
 {
@@ -37,7 +29,6 @@ namespace timeCamp_API.API.Controllers
             {
                 return NotFound();
             }
-          
         }
 
         [HttpPost]
@@ -45,7 +36,30 @@ namespace timeCamp_API.API.Controllers
         public async Task<IActionResult> AddClientUserAsync(AddUserDto addUserDto)
         {
             var result = await _loginService.AddClientUserAsync(addUserDto);
-            return Ok(result);
+
+            if (!result.Equals(""))
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        [Route("/ForgotPassword")]
+        public async Task<IActionResult> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto)
+        {
+            var result = await _loginService.ForgotPasswordAsync(forgotPasswordDto);
+
+            if (result != null)
+            {
+                return Ok(result);
+            }else
+            {
+                return BadRequest(result);
+            }
         }
     }
 }

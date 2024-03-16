@@ -1,6 +1,5 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System.Text;
 using timeCamp.CommonLogic.Dtos;
 using timeCamp.CommonLogic.Interfaces;
@@ -11,7 +10,7 @@ namespace timecamp.BusinessLogic.Services
 {
     public class LoginService : ILoginService
     {
-        private ApplicationDbContext _context { get; }
+        private ApplicationDbContext _context { get; set; }
 
         public LoginService(ApplicationDbContext applicationDbContext) 
         {
@@ -48,9 +47,21 @@ namespace timecamp.BusinessLogic.Services
             }
         }
 
-        public Task<string> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto)
+        public async Task<string?> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto)
         {
-            throw new NotImplementedException();
+             var entity = await _context.Employees
+                            .Where(exp => exp.EmployeeCredentials.Username == forgotPasswordDto.Username)
+                            .Include(employee => employee.EmployeeCredentials)
+                            .FirstOrDefaultAsync();
+
+            if (entity != null)
+            {
+                entity.EmployeeCredentials.Password = forgotPasswordDto.Password;
+                _context.Attach(entity);
+                _context.Entry(entity).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            return null;
         }
 
         public async Task<Guid> AddClientUserAsync(AddUserDto addUserDto)

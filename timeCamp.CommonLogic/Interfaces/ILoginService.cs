@@ -8,7 +8,7 @@ namespace timeCamp.CommonLogic.Interfaces
     public interface ILoginService
     {
         Task<object?> LoginAsync(LoginDto loginDto);
-        Task<string> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto);
+        Task<string?> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto);
         Task<Guid> AddClientUserAsync(AddUserDto addUserDto);
     }
 }
