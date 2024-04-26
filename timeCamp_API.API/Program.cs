@@ -4,6 +4,7 @@ using timeCamp.Infrastructure;
 using Microsoft.Identity.Web;
 using timeCamp.CommonLogic.Interfaces;
 using timecamp.BusinessLogic.Services;
+using timecamp.BusinessLogic.HelperServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,19 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<ILoginService, LoginService>();
+//builder.Services.AddScoped<IEmailService, EmailServiceHelper>();
+builder.Services.AddTransient<IEmailService, EmailServiceHelper>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost3000",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+        });
+});
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -44,6 +58,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+app.UseCors("AllowLocalhost3000");
 
 app.UseHttpsRedirection();
 

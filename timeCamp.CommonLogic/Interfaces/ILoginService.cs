@@ -10,5 +10,6 @@ namespace timeCamp.CommonLogic.Interfaces
         Task<object?> LoginAsync(LoginDto loginDto);
         Task<string?> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto);
         Task<Guid> AddClientUserAsync(AddUserDto addUserDto);
+        int RegisterClientEmailSend(AddUserDto registerUserDto);
     }
 }

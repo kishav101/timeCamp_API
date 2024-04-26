@@ -11,10 +11,12 @@ namespace timecamp.BusinessLogic.Services
     public class LoginService : ILoginService
     {
         private ApplicationDbContext _context { get; set; }
+        private IEmailService _emailService { get; }
 
-        public LoginService(ApplicationDbContext applicationDbContext) 
+        public LoginService(ApplicationDbContext applicationDbContext, IEmailService emailService) 
         {
             _context = applicationDbContext;
+            _emailService = emailService;                      
         }
 
         public async Task<object?> LoginAsync(LoginDto loginDto)
@@ -83,6 +85,25 @@ namespace timecamp.BusinessLogic.Services
             await _context.SaveChangesAsync();
 
             return entity.Id;
+        }
+
+        public int RegisterClientEmailSend(AddUserDto registerUserDto)
+        {
+            int result = -1;
+            if(registerUserDto.Username != null)
+            {
+                try
+                {
+                    _emailService.SendEmail(registerUserDto.Username, "User Registered");
+                    result = 0;
+                }
+                catch (Exception ex)
+                {
+                    result = -1;
+                }
+            }
+
+            return result;
         }
     }
 }
