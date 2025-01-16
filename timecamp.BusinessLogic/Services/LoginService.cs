@@ -21,9 +21,8 @@ namespace timecamp.BusinessLogic.Services
 
         public async Task<object?> LoginAsync(LoginDto loginDto)
         {
-            var query = await _context.Employees
-                                    .Where(employee => employee.EmployeeCredentials.Username == loginDto.Username)
-                                    .FirstOrDefaultAsync();
+            var query = await _context.Employees.Where(employee => employee.EmployeeCredentials.Username == loginDto.Username && employee.EmployeeCredentials.Password == loginDto.Password 
+             && employee.Id.Equals(employee.EmployeeCredentials.EmployeeId)).FirstOrDefaultAsync();
 
             if (query != null)
             {
@@ -72,13 +71,20 @@ namespace timecamp.BusinessLogic.Services
             {
                 Firstname = addUserDto.Firstname,
                 Lastname = addUserDto.Lastname,
-                Address = addUserDto.Address,
+                Email = addUserDto.Email,
+                IsEmployeeActive = true,
+                ProfilePhotoPath= addUserDto.ProfilePhotoPath,
+                CreatedAt = addUserDto.CreatedAt,
+                ModifiedAt = addUserDto.ModifiedAt,
+                RemovedAt = addUserDto.RemovedAt,
                 EmployeeCredentials = new EmployeeCredentials()
                 {
                     Username = addUserDto.Username,
-                    Password = addUserDto.Password
-                }
-
+                    Password = addUserDto.Password,
+                    CreatedAt = addUserDto.CreatedAt,
+                    ModifiedAt = addUserDto.ModifiedAt,
+                    RemovedAt = addUserDto.RemovedAt,
+                },
             };
 
             await _context.Employees.AddAsync(entity);

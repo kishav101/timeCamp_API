@@ -12,5 +12,15 @@ namespace timeCamp.CommonLogic.Modal
 
         public string City { get; set; } = default!;
 
+        public string State { get; set; } = default!;
+
+        public string Country { get; set; } = default!;
+
+        public bool IsComplex { get; set; } = default!;
+
+        public bool IsStandingAloneBuilding { get; set; } = default!;
+
+    
+
     }
 }

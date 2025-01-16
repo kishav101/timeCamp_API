@@ -17,7 +17,21 @@ namespace timeCamp.CommonLogic.Dtos
         [JsonPropertyName("Lastname")]
         public required string Lastname { get; set; }
 
-        [JsonPropertyName("Address")]
-        public Address? Address { get; set; }
+        [JsonPropertyName("ProfilePhotoPath")]
+        public required string ProfilePhotoPath { get; set; }
+
+        [JsonPropertyName("Email")]
+        public required string Email { get; set; }
+
+        [JsonPropertyName("CreatedAt")]
+        public required string CreatedAt { get; set; } = DateTime.Now.ToString();
+
+        [JsonPropertyName("ModifiedAt")]
+        public required string ModifiedAt { get; set; } = DateTime.Now.ToString();
+
+        [JsonPropertyName("RemovedAt")]
+        public required string RemovedAt { get; set; } = DateTime.Now.ToString();
+
+    
     }
 }

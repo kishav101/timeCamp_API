@@ -6,29 +6,29 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace timeCamp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class updateddbtables : Migration
+    public partial class createModel3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EmployeeJob");
+                name: "EmployeeTicket");
 
             migrationBuilder.AddColumn<Guid>(
                 name: "EmployeeId",
-                table: "Job",
+                table: "Ticket",
                 type: "uuid",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.CreateIndex(
-                name: "IX_Job_EmployeeId",
-                table: "Job",
+                name: "IX_Ticket_EmployeeId",
+                table: "Ticket",
                 column: "EmployeeId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Job_Employees_EmployeeId",
-                table: "Job",
+                name: "FK_Ticket_Employees_EmployeeId",
+                table: "Ticket",
                 column: "EmployeeId",
                 principalTable: "Employees",
                 principalColumn: "Id",
@@ -39,45 +39,45 @@ namespace timeCamp.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Job_Employees_EmployeeId",
-                table: "Job");
+                name: "FK_Ticket_Employees_EmployeeId",
+                table: "Ticket");
 
             migrationBuilder.DropIndex(
-                name: "IX_Job_EmployeeId",
-                table: "Job");
+                name: "IX_Ticket_EmployeeId",
+                table: "Ticket");
 
             migrationBuilder.DropColumn(
                 name: "EmployeeId",
-                table: "Job");
+                table: "Ticket");
 
             migrationBuilder.CreateTable(
-                name: "EmployeeJob",
+                name: "EmployeeTicket",
                 columns: table => new
                 {
                     EmployeesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    JobId = table.Column<Guid>(type: "uuid", nullable: false)
+                    TicketsId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployeeJob", x => new { x.EmployeesId, x.JobId });
+                    table.PrimaryKey("PK_EmployeeTicket", x => new { x.EmployeesId, x.TicketsId });
                     table.ForeignKey(
-                        name: "FK_EmployeeJob_Employees_EmployeesId",
+                        name: "FK_EmployeeTicket_Employees_EmployeesId",
                         column: x => x.EmployeesId,
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmployeeJob_Job_JobId",
-                        column: x => x.JobId,
-                        principalTable: "Job",
+                        name: "FK_EmployeeTicket_Ticket_TicketsId",
+                        column: x => x.TicketsId,
+                        principalTable: "Ticket",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeJob_JobId",
-                table: "EmployeeJob",
-                column: "JobId");
+                name: "IX_EmployeeTicket_TicketsId",
+                table: "EmployeeTicket",
+                column: "TicketsId");
         }
     }
 }

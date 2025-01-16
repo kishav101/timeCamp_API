@@ -7,11 +7,33 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace timeCamp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init2 : Migration
+    public partial class createModel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Addresses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Number = table.Column<int>(type: "integer", nullable: false),
+                    Street = table.Column<string>(type: "text", nullable: false),
+                    Zip = table.Column<string>(type: "text", nullable: false),
+                    City = table.Column<string>(type: "text", nullable: false),
+                    State = table.Column<string>(type: "text", nullable: false),
+                    Country = table.Column<string>(type: "text", nullable: false),
+                    IsComplex = table.Column<bool>(type: "boolean", nullable: false),
+                    IsStandingAloneBuilding = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<string>(type: "text", nullable: false),
+                    ModifiedAt = table.Column<string>(type: "text", nullable: false),
+                    RemovedAt = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -52,17 +74,19 @@ namespace timeCamp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employees",
+                name: "EmployeeCredentials",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Firstname = table.Column<string>(type: "text", nullable: false),
-                    Lastname = table.Column<string>(type: "text", nullable: false),
-                    ProfilePhotoPath = table.Column<string>(type: "text", nullable: true)
+                    Username = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<string>(type: "text", nullable: false),
+                    ModifiedAt = table.Column<string>(type: "text", nullable: false),
+                    RemovedAt = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.PrimaryKey("PK_EmployeeCredentials", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,11 +95,36 @@ namespace timeCamp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Experience = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<string>(type: "text", nullable: false),
+                    ModifiedAt = table.Column<string>(type: "text", nullable: false),
+                    RemovedAt = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Job", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ticket",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Location = table.Column<string>(type: "text", nullable: false),
+                    ContactNumber = table.Column<string>(type: "text", nullable: false),
+                    Updates = table.Column<string>(type: "text", nullable: false),
+                    TimeOpened = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    TimeClosed = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<string>(type: "text", nullable: false),
+                    ModifiedAt = table.Column<string>(type: "text", nullable: false),
+                    RemovedAt = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ticket", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -185,81 +234,67 @@ namespace timeCamp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Addresses",
+                name: "Employees",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Street = table.Column<string>(type: "text", nullable: false),
-                    Zip = table.Column<string>(type: "text", nullable: false),
-                    City = table.Column<string>(type: "text", nullable: false),
+                    Firstname = table.Column<string>(type: "text", nullable: false),
+                    Lastname = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
-                    Phone = table.Column<string>(type: "text", nullable: true),
-                    EmployeeId = table.Column<Guid>(type: "uuid", nullable: false)
+                    AddressId = table.Column<Guid>(type: "uuid", nullable: false),
+                    JobId = table.Column<Guid>(type: "uuid", nullable: true),
+                    EmployeeCredentialsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProfilePhotoPath = table.Column<string>(type: "text", nullable: true),
+                    IsEmployeeActive = table.Column<bool>(type: "boolean", nullable: true),
+                    CreatedAt = table.Column<string>(type: "text", nullable: false),
+                    ModifiedAt = table.Column<string>(type: "text", nullable: false),
+                    RemovedAt = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.PrimaryKey("PK_Employees", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Addresses_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
+                        name: "FK_Employees_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Ticket",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    Location = table.Column<string>(type: "text", nullable: false),
-                    ContactNumber = table.Column<string>(type: "text", nullable: false),
-                    Updates = table.Column<string>(type: "text", nullable: false),
-                    TimeOpened = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    TimeClosed = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    EmployeeId = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ticket", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ticket_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
+                        name: "FK_Employees_EmployeeCredentials_EmployeeCredentialsId",
+                        column: x => x.EmployeeCredentialsId,
+                        principalTable: "EmployeeCredentials",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Employees_Job_JobId",
+                        column: x => x.JobId,
+                        principalTable: "Job",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmployeeJob",
+                name: "EmployeeTicket",
                 columns: table => new
                 {
                     EmployeesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    JobId = table.Column<Guid>(type: "uuid", nullable: false)
+                    TicketsId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployeeJob", x => new { x.EmployeesId, x.JobId });
+                    table.PrimaryKey("PK_EmployeeTicket", x => new { x.EmployeesId, x.TicketsId });
                     table.ForeignKey(
-                        name: "FK_EmployeeJob_Employees_EmployeesId",
+                        name: "FK_EmployeeTicket_Employees_EmployeesId",
                         column: x => x.EmployeesId,
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmployeeJob_Job_JobId",
-                        column: x => x.JobId,
-                        principalTable: "Job",
+                        name: "FK_EmployeeTicket_Ticket_TicketsId",
+                        column: x => x.TicketsId,
+                        principalTable: "Ticket",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Addresses_EmployeeId",
-                table: "Addresses",
-                column: "EmployeeId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -299,22 +334,29 @@ namespace timeCamp.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeJob_JobId",
-                table: "EmployeeJob",
+                name: "IX_Employees_AddressId",
+                table: "Employees",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_EmployeeCredentialsId",
+                table: "Employees",
+                column: "EmployeeCredentialsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_JobId",
+                table: "Employees",
                 column: "JobId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ticket_EmployeeId",
-                table: "Ticket",
-                column: "EmployeeId");
+                name: "IX_EmployeeTicket_TicketsId",
+                table: "EmployeeTicket",
+                column: "TicketsId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Addresses");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -331,10 +373,7 @@ namespace timeCamp.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "EmployeeJob");
-
-            migrationBuilder.DropTable(
-                name: "Ticket");
+                name: "EmployeeTicket");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -343,10 +382,19 @@ namespace timeCamp.Infrastructure.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Job");
+                name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "Employees");
+                name: "Ticket");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "EmployeeCredentials");
+
+            migrationBuilder.DropTable(
+                name: "Job");
         }
     }
 }

@@ -5,18 +5,25 @@
 namespace timeCamp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class updateddbtables7rdtime : Migration
+    public partial class createModel2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.AddColumn<string>(
+                name: "EmployeeId",
+                table: "Employees",
+                type: "text",
+                nullable: false,
+                defaultValue: "");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.DropColumn(
+                name: "EmployeeId",
+                table: "Employees");
         }
     }
 }

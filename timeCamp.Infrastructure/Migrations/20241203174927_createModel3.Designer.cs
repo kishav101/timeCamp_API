@@ -12,8 +12,8 @@ using timeCamp.Infrastructure;
 namespace timeCamp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240402184523_Amend_Address_And_Employee_Modal")]
-    partial class AmendAddressAndEmployeeModal
+    [Migration("20241203174927_createModel3")]
+    partial class createModel3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -231,6 +231,35 @@ namespace timeCamp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedAt")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsComplex")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsStandingAloneBuilding")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ModifiedAt")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("RemovedAt")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Street")
                         .IsRequired()
                         .HasColumnType("text");
@@ -253,6 +282,10 @@ namespace timeCamp.Infrastructure.Migrations
                     b.Property<Guid>("AddressId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("CreatedAt")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
@@ -260,9 +293,16 @@ namespace timeCamp.Infrastructure.Migrations
                     b.Property<Guid>("EmployeeCredentialsId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Firstname")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool?>("IsEmployeeActive")
+                        .HasColumnType("boolean");
 
                     b.Property<Guid?>("JobId")
                         .HasColumnType("uuid");
@@ -271,14 +311,16 @@ namespace timeCamp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("ModifiedAt")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("ProfilePhotoPath")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("isDeleted")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool?>("isEmployeeActive")
-                        .HasColumnType("boolean");
+                    b.Property<string>("RemovedAt")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -297,7 +339,19 @@ namespace timeCamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("CreatedAt")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ModifiedAt")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RemovedAt")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -316,11 +370,27 @@ namespace timeCamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("CreatedAt")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Experience")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ModifiedAt")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RemovedAt")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -339,14 +409,26 @@ namespace timeCamp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("CreatedAt")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("EmployeeId")
+                    b.Property<Guid>("EmployeeId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ModifiedAt")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RemovedAt")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -451,7 +533,9 @@ namespace timeCamp.Infrastructure.Migrations
                 {
                     b.HasOne("timeCamp.CommonLogic.Modal.Employee", null)
                         .WithMany("Tickets")
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("timeCamp.CommonLogic.Modal.Employee", b =>

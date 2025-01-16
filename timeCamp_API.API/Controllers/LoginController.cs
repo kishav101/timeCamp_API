@@ -33,7 +33,7 @@ namespace timeCamp_API.API.Controllers
             }
         }
 
-        [Authorize]
+     
         [HttpPost]
         [Route("/AddClientUser")]
         public async Task<IActionResult> AddClientUserAsync(AddUserDto addUserDto)

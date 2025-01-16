@@ -5,7 +5,7 @@
 namespace timeCamp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class updateddbtables4rdtime : Migration
+    public partial class newmodel2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

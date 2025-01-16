@@ -9,5 +9,7 @@
         public string Updates { get; set; } = default!;
         public DateTime TimeOpened { get; set; } = default!;
         public DateTime TimeClosed { get; set; } = default!;
+  
+
     }
 }
